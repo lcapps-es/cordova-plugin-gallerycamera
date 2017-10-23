@@ -11,16 +11,23 @@
         <clobbers target="navigator.galleryCamera" />
     </js-module>
     
+    <dependency id="cordova-plugin-file" />
+    
     <!-- Android Platform -->
     <platform name="android">
         <config-file target="res/xml/config.xml" parent="/*">
             <feature name="CordovaPluginGalleryCamera">
-                <param name="android-package" value="es.lmmartin.cordova.camera.CameraGalleryChooser"/>
+                <param name="android-package" value="es.lmmartin.cordova.camera.GalleryCameraLauncher"/>
             </feature>
         </config-file>
         <config-file target="AndroidManifest.xml" parent="/*">
         	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
         </config-file>
-        <!--source-file src="src/android/CameraLauncher.java" target-dir="src/org/apache/cordova/camera" /-->
+        
+        <source-file src="src/android/GalleryCameraLauncher.java" target-dir="src/es/lmmartin/cordova/camera" />
+        
+        <config-file target="res/values/strings.xml" parent="/*">
+			<string name="pick_any_option">Pick any option...</string>
+		</config-file>
     </platform>
 </plugin>

@@ -3,9 +3,28 @@
 Plugin that extends input files allowing you to choose between camera or gallery
 
 ##Installation
-### Android
+
+From master
+```
+cordova plugin add https://github.com/lmmartinb/cordova-plugin-gallerycamera
+```
+
+Latest stable version
+```
+cordova plugin add cordova-plugin-gallerycamera
+```
+
 ## Usage
+
+You only need to change:
+document.getElementById('###').files[0]
+to
+navigator.galleryCamera.getFile( 0 )
+
 ## How it works
+
+PENDING
+
 ## License
 ```
 MIT License
@@ -21,3 +40,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 ```
 
 ## History of Changes.
+
+### 0.0.1
+First changes. Basic functionality working.
