@@ -22,7 +22,7 @@ document.getElementById('###').files[0]
 ```
 to
 ```
-navigator.galleryCamera.getFile( 0 )
+navigator.galleryCamera.getFile( inputId )
 ```
 
 ## How it works
@@ -49,6 +49,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 - Multi-Language support.
 
 ## History of Changes.
+
+### v0.0.2
+Check Android Permissions
 
 ### v0.0.1
 First changes. Basic functionality working.

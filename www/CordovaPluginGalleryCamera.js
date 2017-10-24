@@ -23,7 +23,8 @@ module.exports = {
 		 */
 		getFile: function( id ){
 			var input = document.getElementById( id );
-			if ( input.files.length > 0 ){ // Common input.
+
+			if ( input !== undefined && input !== null && input.files.length > 0 ){ // Common input.
 				return input.files[0];
 			}else{ // GalleryCamera array.
 			    return (this.files[0] !== undefined ? this.files[0] : null )

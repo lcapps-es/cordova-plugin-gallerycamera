@@ -47,7 +47,11 @@ public class GalleryCameraLauncher extends CordovaPlugin{
 	private static final String IMAGE_JPEG = "image/jpeg";
 	private static final int JPEG = 0;                  // Take a picture of type JPEG
 	private static final int PNG = 1;                   // Take a picture of type PNG
-public static final int TAKE_PIC_SEC = 0;
+	public static final int TAKE_PIC_SEC = 0;
+	protected final static String[] permissions = {
+			Manifest.permission.CAMERA,
+			Manifest.permission.READ_EXTERNAL_STORAGE
+	};
 
 
 	@Override
@@ -85,41 +89,48 @@ public static final int TAKE_PIC_SEC = 0;
 	}
 	
 	protected Intent getImageChooser(Context context){
-		if( !PermissionHelper.hasPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) )
-		{
-			PermissionHelper.requestPermission(this, TAKE_PIC_SEC, Manifest.permission.READ_EXTERNAL_STORAGE );
-		}
+		boolean saveAlbumPermission = PermissionHelper.hasPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE);
+		boolean takePicturePermission = PermissionHelper.hasPermission(this, Manifest.permission.CAMERA);
 
-		if( PermissionHelper.hasPermission(this, Manifest.permission.CAMERA) ) {
+		if (takePicturePermission && saveAlbumPermission) {
+			Intent photoGalleryIntent = new Intent( Intent.ACTION_PICK,
+					android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI );
+
+			Intent takePhotoIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+
+			ContentResolver contentResolver = this.cordova.getActivity().getContentResolver();
+			ContentValues cv = new ContentValues();
+			cv.put(MediaStore.Images.Media.MIME_TYPE, IMAGE_JPEG);
+			Uri imageUri = contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, cv);
+			LOG.d(LOG_TAG, "Taking a picture and saving to: " + imageUri.toString());
+
+			//takePhotoIntent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, imageUri);
+
+			List<Intent> intentList = new ArrayList();
+			intentList = addIntentsToList(context, intentList, photoGalleryIntent);
+			intentList = addIntentsToList(context, intentList, takePhotoIntent);
+
+			Intent chooserIntent = null;
+
+			if (intentList.size() > 0) {
+				chooserIntent = Intent.createChooser( intentList.remove( intentList.size() - 1 ),
+						context.getString( cordova.getActivity().getResources().getIdentifier("pick_any_option", "string", cordova.getActivity().getPackageName()) ));
+				chooserIntent.putExtra( Intent.EXTRA_INITIAL_INTENTS,
+						intentList.toArray( new Parcelable[]{} ) );
+			}
+
+			return chooserIntent;
+		} else if (saveAlbumPermission && !takePicturePermission) {
 			PermissionHelper.requestPermission(this, TAKE_PIC_SEC, Manifest.permission.CAMERA);
+			return this.getImageChooser(context);
+		} else if (!saveAlbumPermission && takePicturePermission) {
+			PermissionHelper.requestPermission(this, TAKE_PIC_SEC, Manifest.permission.READ_EXTERNAL_STORAGE);
+			return this.getImageChooser(context);
+		} else {
+			PermissionHelper.requestPermissions(this, TAKE_PIC_SEC, permissions);
+			return this.getImageChooser(context);
 		}
-		Intent photoGalleryIntent = new Intent( Intent.ACTION_PICK, 
-				android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI );
 
-		Intent takePhotoIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-
-		ContentResolver contentResolver = this.cordova.getActivity().getContentResolver();
-		ContentValues cv = new ContentValues();
-		cv.put(MediaStore.Images.Media.MIME_TYPE, IMAGE_JPEG);
-		Uri imageUri = contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, cv);
-		LOG.d(LOG_TAG, "Taking a picture and saving to: " + imageUri.toString());
-
-		//takePhotoIntent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, imageUri);
-
-		List<Intent> intentList = new ArrayList();
-		intentList = addIntentsToList(context, intentList, photoGalleryIntent);
-		intentList = addIntentsToList(context, intentList, takePhotoIntent);
-
-		Intent chooserIntent = null;
-
-		if (intentList.size() > 0) {
-			chooserIntent = Intent.createChooser( intentList.remove( intentList.size() - 1 ),
-                    context.getString( cordova.getActivity().getResources().getIdentifier("pick_any_option", "string", cordova.getActivity().getPackageName()) ));
-            chooserIntent.putExtra( Intent.EXTRA_INITIAL_INTENTS,
-            		intentList.toArray( new Parcelable[]{} ) );
-        }
-		
-		return chooserIntent;
 	}
 	
 	private static List<Intent> addIntentsToList( Context context, List<Intent> list, Intent intent ) {
