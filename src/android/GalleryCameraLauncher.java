@@ -17,6 +17,7 @@ import android.os.Build;
 import android.database.Cursor;
 import android.os.Environment;
 import android.provider.DocumentsContract;
+import android.Manifest;
 
 import android.content.ContentResolver;
 import android.content.ContentValues;
@@ -31,6 +32,7 @@ import org.apache.cordova.CordovaPlugin;
 import org.apache.cordova.LOG;
 import org.apache.cordova.PluginResult;
 import org.apache.cordova.CordovaInterface;
+import org.apache.cordova.PermissionHelper;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -45,6 +47,7 @@ public class GalleryCameraLauncher extends CordovaPlugin{
 	private static final String IMAGE_JPEG = "image/jpeg";
 	private static final int JPEG = 0;                  // Take a picture of type JPEG
 	private static final int PNG = 1;                   // Take a picture of type PNG
+public static final int TAKE_PIC_SEC = 0;
 
 
 	@Override
@@ -82,6 +85,14 @@ public class GalleryCameraLauncher extends CordovaPlugin{
 	}
 	
 	protected Intent getImageChooser(Context context){
+		if( !PermissionHelper.hasPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) )
+		{
+			PermissionHelper.requestPermission(this, TAKE_PIC_SEC, Manifest.permission.READ_EXTERNAL_STORAGE );
+		}
+
+		if( PermissionHelper.hasPermission(this, Manifest.permission.CAMERA) ) {
+			PermissionHelper.requestPermission(this, TAKE_PIC_SEC, Manifest.permission.CAMERA);
+		}
 		Intent photoGalleryIntent = new Intent( Intent.ACTION_PICK, 
 				android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI );
 
