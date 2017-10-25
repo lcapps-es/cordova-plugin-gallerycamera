@@ -1,6 +1,6 @@
 {
   "name": "cordova-plugin-gallerycamera",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Cordova Gallery Camera",
   "cordova": {
     "id": "cordova-plugin-gallerycamera",

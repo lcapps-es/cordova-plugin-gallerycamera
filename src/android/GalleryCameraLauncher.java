@@ -10,6 +10,7 @@ import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ResolveInfo;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Parcelable;
 import android.provider.MediaStore;
@@ -21,8 +22,11 @@ import android.Manifest;
 
 import android.content.ContentResolver;
 import android.content.ContentValues;
+import android.util.Log;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.lang.String;
@@ -59,12 +63,33 @@ public class GalleryCameraLauncher extends CordovaPlugin{
 	{
 	    if ( requestCode == CHOOSE_IMAGE_ID && data != null ) {
 			Uri uri = data.getData();
-			String fileLocation = this.getRealPath(uri, this.cordova);
+			if( uri == null ) {
+				Bitmap photo = (Bitmap) data.getExtras().get("data");
 
-			this.callbackContext.success( fileLocation );
+				ContentResolver contentResolver = this.cordova.getActivity().getContentResolver();
+				ContentValues cv = new ContentValues();
+				cv.put(MediaStore.Images.Media.MIME_TYPE, IMAGE_JPEG);
+				uri = contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, cv);
+				//ByteArrayOutputStream bos = new ByteArrayOutputStream();
+
+				try {
+					OutputStream imageOut = contentResolver.openOutputStream(uri);
+					photo.compress(Bitmap.CompressFormat.JPEG, 100, imageOut);
+
+					String fileLocation = this.getRealPath(uri, this.cordova);
+
+					this.callbackContext.success(fileLocation);
+				} catch (Exception e) {
+					Log.e(LOG_TAG, e.getMessage());
+				}
+			}else{
+				String fileLocation = this.getRealPath(uri, this.cordova);
+
+				this.callbackContext.success( fileLocation );
+			}
 	    }
 	}
-	
+
 	public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
 		this.callbackContext = callbackContext;
 		LOG.d(LOG_TAG, "executing action");
@@ -98,13 +123,14 @@ public class GalleryCameraLauncher extends CordovaPlugin{
 
 			Intent takePhotoIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
 
-			ContentResolver contentResolver = this.cordova.getActivity().getContentResolver();
+			/*ContentResolver contentResolver = this.cordova.getActivity().getContentResolver();
 			ContentValues cv = new ContentValues();
 			cv.put(MediaStore.Images.Media.MIME_TYPE, IMAGE_JPEG);
 			Uri imageUri = contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, cv);
-			LOG.d(LOG_TAG, "Taking a picture and saving to: " + imageUri.toString());
+			LOG.d(LOG_TAG, "Taking a picture and saving to: " + imageUri.toString());*/
 
 			//takePhotoIntent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, imageUri);
+
 
 			List<Intent> intentList = new ArrayList();
 			intentList = addIntentsToList(context, intentList, photoGalleryIntent);
@@ -122,17 +148,17 @@ public class GalleryCameraLauncher extends CordovaPlugin{
 			return chooserIntent;
 		} else if (saveAlbumPermission && !takePicturePermission) {
 			PermissionHelper.requestPermission(this, TAKE_PIC_SEC, Manifest.permission.CAMERA);
-			return this.getImageChooser(context);
+			return null;
 		} else if (!saveAlbumPermission && takePicturePermission) {
 			PermissionHelper.requestPermission(this, TAKE_PIC_SEC, Manifest.permission.READ_EXTERNAL_STORAGE);
-			return this.getImageChooser(context);
+			return null;
 		} else {
 			PermissionHelper.requestPermissions(this, TAKE_PIC_SEC, permissions);
-			return this.getImageChooser(context);
+			return null;
 		}
 
 	}
-	
+
 	private static List<Intent> addIntentsToList( Context context, List<Intent> list, Intent intent ) {
 	    List<ResolveInfo> resInfo = context.getPackageManager().queryIntentActivities(intent, 0);
 	    
@@ -183,6 +209,7 @@ public class GalleryCameraLauncher extends CordovaPlugin{
 	public static String getRealPathFromURI_API11_And_Above(final Context context, final Uri uri) {
 
 		final boolean isKitKat = Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT;
+
 		// DocumentProvider
 		if (isKitKat && DocumentsContract.isDocumentUri(context, uri)) {
 
