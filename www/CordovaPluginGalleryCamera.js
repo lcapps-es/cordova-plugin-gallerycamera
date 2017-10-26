@@ -51,77 +51,79 @@ module.exports = {
 // @TODO: Detect if fileChooser has onclick event and it's not ours (execute before ours).
 document.addEventListener("deviceready", function() {
 
-	// For every change in DOM...
-	var observer = new MutationObserver(function(mutation) {
+	if ( cordova.platformId !== undefined && cordova.platformId !== null && cordova.platformId == "android" ){
+		// For every change in DOM...
+		var observer = new MutationObserver(function(mutation) {
 		// Get every <input type="file"/>.
-        var fileChoosers = document.querySelectorAll("input[type=file]");
+        	var fileChoosers = document.querySelectorAll("input[type=file]");
 
-        for( var i = 0; i < fileChoosers.length; i++ ){
-        	
-        	// Check if onclick is overrided.
-            var clickChanged = fileChoosers[i].getAttribute( 'data-gallerycamera');
-            if ( clickChanged ) continue;
-            
-            // Override onclick.
-            fileChoosers[i].addEventListener( 'click', function(e){
-                e.preventDefault();
+		for( var i = 0; i < fileChoosers.length; i++ ){
 
-                var targetElement = e.target || e.srcElement;
+		// Check if onclick is overrided.
+		var clickChanged = fileChoosers[i].getAttribute( 'data-gallerycamera');
+		if ( clickChanged ) continue;
 
-                // Choose or take the picture.
-                navigator.galleryCamera.getPicture( function( resp ){
+			// Override onclick.
+		fileChoosers[i].addEventListener( 'click', function(e){
+			e.preventDefault();
+
+			var targetElement = e.target || e.srcElement;
+
+			// Choose or take the picture.
+			navigator.galleryCamera.getPicture( function( resp ){
 
 					function readFromFile(fileName) {
-						var errorHandler = function (fileName, e) {
-						    var msg = '';
-						
-							switch (e.code) {
-							    case FileError.QUOTA_EXCEEDED_ERR:
-							        msg = 'Storage quota exceeded';
-							    break;
-							case FileError.NOT_FOUND_ERR:
-							    msg = 'File not found';
-							    break;
-							case FileError.SECURITY_ERR:
-							    msg = 'Security error';
-							    break;
-							case FileError.INVALID_MODIFICATION_ERR:
-							    msg = 'Invalid modification';
-							    break;
-							case FileError.INVALID_STATE_ERR:
-							    msg = 'Invalid state';
-							    break;
-							default:
-							    msg = 'Unknown error';
-							        break;
-							};
-							
-							console.log('Error (' + fileName + '): ' + msg);
-						}
-	                            
-						var pathToFile = fileName;
-	                    window.resolveLocalFileSystemURL(pathToFile, function (fileEntry) {
-	                    	fileEntry.file(function (file) {
-	                    		// Store file.
-	                    		navigator.galleryCamera.cleanFiles();
-	                    		navigator.galleryCamera.addFile( file );
-	                    		
-	                    		// Trigger onchange event.
-	                    		var event = new Event('change');
-	                    		targetElement.dispatchEvent(event);
-	
-	                    	}, errorHandler.bind(null, fileName));
-	                    }, errorHandler.bind(null, fileName));
+					var errorHandler = function (fileName, e) {
+					var msg = '';
+
+					switch (e.code) {
+					case FileError.QUOTA_EXCEEDED_ERR:
+					msg = 'Storage quota exceeded';
+					break;
+					case FileError.NOT_FOUND_ERR:
+					msg = 'File not found';
+					break;
+					case FileError.SECURITY_ERR:
+					msg = 'Security error';
+					break;
+					case FileError.INVALID_MODIFICATION_ERR:
+					msg = 'Invalid modification';
+					break;
+					case FileError.INVALID_STATE_ERR:
+					msg = 'Invalid state';
+					break;
+					default:
+					msg = 'Unknown error';
+					break;
+					};
+
+					console.log('Error (' + fileName + '): ' + msg);
 					}
-	
+
+					var pathToFile = fileName;
+					window.resolveLocalFileSystemURL(pathToFile, function (fileEntry) {
+							fileEntry.file(function (file) {
+									// Store file.
+									navigator.galleryCamera.cleanFiles();
+									navigator.galleryCamera.addFile( file );
+
+									// Trigger onchange event.
+									var event = new Event('change');
+									targetElement.dispatchEvent(event);
+
+									}, errorHandler.bind(null, fileName));
+							}, errorHandler.bind(null, fileName));
+					}
+
 					readFromFile('file://' + resp);
-                    
-                }, alert, {} );
-                return false;
-            });
-            
-            fileChoosers[i].setAttribute( 'data-gallerycamera', true );
-        }
+
+			}, alert, {} );
+			return false;
+	});
+
+	fileChoosers[i].setAttribute( 'data-gallerycamera', true );
+	}
+	}
     });
 
     var container = document.documentElement || document.body;

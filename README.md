@@ -50,6 +50,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 ## History of Changes.
 
+### v0.0.4
+isAndroid Validation
+
 ### v0.0.3
 Fix problems with 7.1 or greater Android version.
 
