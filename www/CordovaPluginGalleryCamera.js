@@ -123,13 +123,13 @@ document.addEventListener("deviceready", function() {
 
 	fileChoosers[i].setAttribute( 'data-gallerycamera', true );
 	}
-	}
-    });
+	});
 
     var container = document.documentElement || document.body;
     var config = { attributes: true, childList: true, characterData: true,subtree: true };
 
     observer.observe(container, config);
+    }
 
 }, false);
 

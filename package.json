@@ -1,11 +1,12 @@
 {
   "name": "cordova-plugin-gallerycamera",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Cordova Gallery Camera",
   "cordova": {
     "id": "cordova-plugin-gallerycamera",
     "platforms": [
       "android"
+      , "ios"
     ]
   },
   "repository": {

@@ -45,10 +45,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 ## To-Do
 - Call onclick before get the image if we have it defined. 
 - Only works with simple inputs. We need to implement multiple logic.
-- Check it in iOS.
+- Check it in iOS. (OK)
 - Multi-Language support.
 
 ## History of Changes.
+
+### v0.0.5
+iOS Compatibility
 
 ### v0.0.4
 isAndroid Validation
