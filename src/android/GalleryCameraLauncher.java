@@ -314,4 +314,14 @@ public class GalleryCameraLauncher extends CordovaPlugin{
 	public static boolean isGooglePhotosUri(Uri uri) {
 		return "com.google.android.apps.photos.content".equals(uri.getAuthority());
 	}
+
+	@Override
+	public void startActivityForResult(Intent intent, int requestCode) {
+
+		if (intent == null) {
+			intent = new Intent();
+		}
+
+		super.startActivityForResult(intent, requestCode);
+	}
 }
