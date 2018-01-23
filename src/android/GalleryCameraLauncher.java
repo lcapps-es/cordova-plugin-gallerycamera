@@ -99,13 +99,21 @@ public class GalleryCameraLauncher extends CordovaPlugin{
 
 			Context context = this.cordova.getActivity().getApplicationContext();
 			Intent chooserIntent = this.getImageChooser(context);
-			this.cordova.setActivityResultCallback(this);
-			this.cordova.getActivity().startActivityForResult( chooserIntent, CHOOSE_IMAGE_ID );
-			PluginResult r = new PluginResult(PluginResult.Status.NO_RESULT);
-            r.setKeepCallback(true);
-            callbackContext.sendPluginResult(r);
-            
-            return true;
+			if( chooserIntent == null ){
+				chooserIntent = this.getImageChooser(context);
+			}
+
+			if( chooserIntent != null ) {
+				this.cordova.setActivityResultCallback(this);
+				this.cordova.getActivity().startActivityForResult( chooserIntent, CHOOSE_IMAGE_ID );
+				PluginResult r = new PluginResult(PluginResult.Status.NO_RESULT);
+				r.setKeepCallback(true);
+				callbackContext.sendPluginResult(r);
+
+				return true;
+			}else{
+				return false;
+			}
 		}
 		
 		callbackContext.error( "return error action" );
@@ -313,15 +321,5 @@ public class GalleryCameraLauncher extends CordovaPlugin{
 	
 	public static boolean isGooglePhotosUri(Uri uri) {
 		return "com.google.android.apps.photos.content".equals(uri.getAuthority());
-	}
-
-	@Override
-	public void startActivityForResult(Intent intent, int requestCode) {
-
-		if (intent == null) {
-			intent = new Intent();
-		}
-
-		super.startActivityForResult(intent, requestCode);
 	}
 }
