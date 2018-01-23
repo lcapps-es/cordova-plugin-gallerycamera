@@ -339,11 +339,9 @@ public class GalleryCameraLauncher extends CordovaPlugin{
 			this.cordova.getActivity().startActivityForResult( chooserIntent, CHOOSE_IMAGE_ID );
 			PluginResult r = new PluginResult(PluginResult.Status.NO_RESULT);
 			r.setKeepCallback(true);
-			callbackContext.sendPluginResult(r);
-
-			return true;
+			this.callbackContext.sendPluginResult(r);
 		}else{
-			return false;
+			this.callbackContext.sendPluginResult(new PluginResult(PluginResult.Status.ERROR, 20));
 		}
 	}
 }
