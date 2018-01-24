@@ -6,7 +6,7 @@ Plugin that extends input files allowing you to choose between camera or gallery
 
 From master
 ```
-cordova plugin add https://github.com/lmmartinb/cordova-plugin-gallerycamera
+cordova plugin add https://github.com/lcapps-es/cordova-plugin-gallerycamera
 ```
 
 Latest stable version
@@ -33,7 +33,7 @@ PENDING
 ```
 MIT License
 
-Copyright (c) 2017 Luis Miguel Martín Bardanca
+Copyright (c) 2017 - LCApps 
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 

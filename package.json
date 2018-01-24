@@ -1,17 +1,17 @@
 {
   "name": "cordova-plugin-gallerycamera",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "description": "Cordova Gallery Camera",
   "cordova": {
     "id": "cordova-plugin-gallerycamera",
     "platforms": [
-      "android"
+      	"android"
       , "ios"
     ]
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/lmmartinb/cordova-plugin-gallerycamera.git"
+    "url": "git+https://github.com/lcapps-es/cordova-plugin-gallerycamera.git"
   },
   "keywords": [
     "cordova",
@@ -20,11 +20,11 @@
     "ecosystem:cordova",
     "cordova-android"
   ],
-  "author": "Luis Miguel Martín Bardanca",
+  "author": "LCApps",
   "license": "MIT License",
   "bugs": {
-    "url": "https://github.com/lmmartinb/cordova-plugin-gallerycamera/issues"
+    "url": "https://github.com/lcapps-es/cordova-plugin-gallerycamera/issues"
   },
-  "homepage": "https://github.com/lmmartinb/cordova-plugin-gallerycamera#readme",
+  "homepage": "https://github.com/lcapps-es/cordova-plugin-gallerycamera#readme",
   "dependencies": {}
 }

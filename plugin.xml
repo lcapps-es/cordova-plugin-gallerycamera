@@ -4,8 +4,8 @@
     <description>Cordova Gallery Camera</description>
     <license>MIT License</license>
     <keywords>cordova, camera, gallery</keywords>
-    <repo>https://github.com/lmmartinb/cordova-plugin-gallerycamera</repo>
-    <issue>https://github.com/lmmartinb/cordova-plugin-gallerycamera/issues</issue>
+    <repo>https://github.com/lcapps-es/cordova-plugin-gallerycamera</repo>
+    <issue>https://github.com/lcapps-es/cordova-plugin-gallerycamera/issues</issue>
     
     <js-module name="CordovaPluginGalleryCamera" src="www/CordovaPluginGalleryCamera.js">
         <clobbers target="navigator.galleryCamera" />
@@ -17,7 +17,7 @@
     <platform name="android">
         <config-file target="res/xml/config.xml" parent="/*">
             <feature name="CordovaPluginGalleryCamera">
-                <param name="android-package" value="es.lmmartin.cordova.camera.GalleryCameraLauncher"/>
+                <param name="android-package" value="es.lcapps.cordova.camera.GalleryCameraLauncher"/>
             </feature>
         </config-file>
         <config-file target="AndroidManifest.xml" parent="/*">
@@ -25,7 +25,7 @@
         	<uses-permission android:name="android.permission.CAMERA" />
         </config-file>
         
-        <source-file src="src/android/GalleryCameraLauncher.java" target-dir="src/es/lmmartin/cordova/camera" />
+        <source-file src="src/android/GalleryCameraLauncher.java" target-dir="src/es/lcapps/cordova/camera" />
         
         <config-file target="res/values/strings.xml" parent="/*">
 			<string name="pick_any_option">Pick any option...</string>

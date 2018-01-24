@@ -1,7 +1,7 @@
 /**
  * @file Main JS Plugin file. All possible actions are defined here.
  * 
- * @author Luis Miguel Martín <lm.martinb@gmail.com>
+ * @author LCApps 
  */
 var exec = require( 'cordova/exec' );
 

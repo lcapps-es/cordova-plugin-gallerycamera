@@ -1,9 +1,9 @@
 /**
  * @file Android Plugin Main Class
  * 
- * @author Luis Miguel Martín <lm.martinb@gmail.com>
+ * @author LCApps
  */
-package es.lmmartin.cordova.camera;
+package es.lcapps.cordova.camera;
 
 import android.annotation.SuppressLint;
 import android.content.ContentUris;
