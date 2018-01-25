@@ -49,6 +49,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 - Multi-Language support.
 
 ## History of Changes.
+### v1.0.0
+First stable version
 
 ### v0.0.9
 ### v0.0.8
